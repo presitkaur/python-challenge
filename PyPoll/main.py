@@ -1,12 +1,13 @@
+#import dependencies 
 import os 
 import csv 
 pypollxl = os.path.join("PythonHomework", "python-challenge", "PyPoll", "Resources", "election_data_pypoll.csv")
 
-
+#Declare list variables for applicable rows of the original data csv file 
 voterid = [] 
 candidate_name = [] 
 
-
+#Collect the information from the csv provided and deposit it into the appropriate list variables 
 with open(pypollxl, encoding="utf-8") as csvfile:
     csvreader = csv.reader(csvfile,delimiter=",") 
     header = next(csvreader)     
@@ -14,15 +15,19 @@ with open(pypollxl, encoding="utf-8") as csvfile:
         voterid.append((row[0]))
         candidate_name.append((row[2]))
 
+#Find the unique candidates by importing Counter
 from collections import Counter 
 candidates = Counter(candidate_name).keys()
+#running "print(candidates)" will allow us to see the list of unique candidates 
+#as this is only a short list, we can use the following code 
 
+#Create empty numeric variables for each candidate
 Khan = 0
 Correy = 0 
 Li = 0 
 OTooley = 0 
 
-#collecting the vote numbers for each candidate 
+#collecting the vote numbers for each candidate by using a for loop and a conditional statement
 for x in range(len(candidate_name)):
     if candidate_name[x] == "Li":
         Li = Li + 1 
@@ -33,13 +38,14 @@ for x in range(len(candidate_name)):
     else: 
         OTooley = OTooley + 1 
 
-#Total number of votes cast 
-total_votes = int((len(voterid)))
-
-#number of votes list 
+#compile the above into a list so that it can later be zipped into a dictionary 
+# @NOTE it is very important that it is in the same order as within the "candidates" list 
 votes = [Khan, Correy, Li, OTooley]
 
-#percentages 
+#Total number of votes can be found by running the below 
+total_votes = int((len(voterid)))
+
+#calculate the percentages for each candidate
 khanp = (Khan/total_votes)*100 
 correyp = (Correy/total_votes)*100 
 lip = (Li/total_votes)*100 
@@ -49,13 +55,16 @@ otooleyp = (OTooley/total_votes)*100
 dictionary = dict(zip(candidates, votes))
 winner = max(dictionary, key=dictionary.get)
 
-#formatted values
+#optional: format values so that they are easier to read 
 khanp = "{:,.2f}".format(khanp)
 correyp = "{:,.2f}".format(correyp)
 lip = "{:,.2f}".format(lip)
 otooleyp = "{:,.2f}".format(otooleyp)
 total_votes = "{:,.2f}".format(total_votes)
 
+#the below will store our analysis findings into a variable called "final"
+#this will make it easier to transport the infromation gathered into the analysis text file in the 
+#analysis folder 
 final = (
     f"------------------------------------------------------------ \n"
     f"                   PyPoll Analysis \n"
